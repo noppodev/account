@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Noppo Account - マイページ</title>
+    <style>
+        :root {
+            --primary: #0047AB;
+            --accent: #00D2FF;
+            --bg: #f8f9fc;
+            --card-bg: #ffffff;
+            --text-main: #2d3436;
+            --text-sub: #636e72;
+            --danger: #ff4757;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+
+        .profile-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0 auto 15px;
+        }
+
+        .user-email {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            word-break: break-all;
+        }
+
+        .user-status {
+            font-size: 11px;
+            color: var(--text-sub);
+            background: #eef2f7;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 5px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .logout-btn {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ff4757;
+            background: transparent;
+            color: var(--danger);
+            border-radius: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            margin-bottom: 50px;
+            transition: 0.2s;
+        }
+
+        .logout-btn:hover {
+            background: #fff5f5;
+        }
+
+        #login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .login-box {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.05);
+        }
+
+        .btn-login {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            color: white;
+            padding: 16px 40px;
+            border-radius: 14px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 20px;
+            box-shadow: 0 5px 15px rgba(0,71,171,0.2);
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+
+        .tool-card {
+            background: white;
+            aspect-ratio: 1;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 未ログイン時に表示されるオーバーレイ -->
+    <div id="login-overlay">
+        <div class="login-box">
+            <div style="margin-bottom: 15px;">
+                <img src="https://noppodev.github.io/noppologo/noppostudiologo.png" style="width: 150px; object-fit: contain;" alt="Noppo Logo">
+            </div>
+            <p style="color:#666; margin-bottom:20px;">これ一つで、すべてのツールを。</p>
+            <a href="#" id="login-link" class="btn-login">Noppoでログイン</a>
+        </div>
+    </div>
+
+    <!-- メインコンテンツ -->
+    <div class="container" id="main-content">
+        <div class="header">
+            <div class="logo-area">
+                <img src="https://noppodev.github.io/noppologo/noppostudiologo.png" class="logo-img" alt="logo">
+                <span class="logo-text">Noppo</span>
+            </div>
+            <button onclick="logout()" style="border:none; background:none; font-size:20px; cursor:pointer;">⚙️</button>
+        </div>
+
+        <div class="profile-card">
+            <div class="avatar" id="user-avatar">?</div>
+            <div class="user-email" id="user-email">読み込み中...</div>
+            <div class="user-status" id="user-id-display">Noppo 認証済み</div>
+        </div>
+
+        <span class="section-title">あなたのツール</span>
+        <div class="tool-grid">
+            <div class="tool-card">🛠️</div>
+            <div class="tool-card">📊</div>
+            <div class="tool-card">🎨</div>
+            <div class="tool-card">📝</div>
+            <div class="tool-card">🔍</div>
+            <div class="tool-card">📅</div>
+            <div class="tool-card">💬</div>
+            <div class="tool-card">📂</div>
+        </div>
+
+        <button class="logout-btn" onclick="logout()">ログアウト</button>
+    </div>
+
+    <script>
+        // 設定項目 - GitHub Pagesへ移行してもそのままでOK
+        const AUTH_WORKER_URL = "https://noppo-auth.noppo5319.workers.dev";
+        const SUPABASE_URL = "https://vvavasrdxguqkiigcxkl.supabase.co";
+        const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ2YXZhc3JkeGd1cWtpaWdjeGtsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njc0MTk5ODcsImV4cCI6MjA4Mjk5NTk4N30.CVq3lyRbxek7Ejs4tP5sN9-0JNEXSLtCsC2Pj-skFFQ";
+
+        async function init() {
+            const params = new URLSearchParams(window.location.search);
+            const tokenFromUrl = params.get('token');
+
+            if (tokenFromUrl) {
+                localStorage.setItem('noppo_token', tokenFromUrl);
+                // URLから?token=...を取り除いて綺麗にする
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+
+            const token = localStorage.getItem('noppo_token');
+
+            if (!token) {
+                showLoginOverlay();
+            } else {
+                fetchUserProfile(token);
+            }
+        }
+
+        function showLoginOverlay() {
+            const overlay = document.getElementById('login-overlay');
+            const loginLink = document.getElementById('login-link');
+            overlay.style.display = 'flex';
+            
+            // 重要：GitHub Pagesに公開した場合、window.location.href は自動的にそのURLになります
+            const currentUrl = window.location.href;
+            const redirect = encodeURIComponent(currentUrl);
+            loginLink.href = `${AUTH_WORKER_URL}?redirect=${redirect}`;
+        }
+
+        async function fetchUserProfile(token) {
+            try {
+                const response = await fetch(`${SUPABASE_URL}/auth/v1/user`, {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "apikey": SUPABASE_KEY
+                    }
+                });
+                
+                if (!response.ok) throw new Error("セッション期限切れ");
+                
+                const user = await response.json();
+                
+                document.getElementById('user-email').innerText = user.email;
+                document.getElementById('user-avatar').innerText = user.email.substring(0, 1).toUpperCase();
+                document.getElementById('user-id-display').innerText = "ID: " + user.id.substring(0, 8) + "...";
+
+            } catch (err) {
+                console.error("認証エラー:", err);
+                logout();
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('noppo_token');
+            location.reload();
+        }
+
+        window.onload = init;
+    </script>
+</body>
+</html>
